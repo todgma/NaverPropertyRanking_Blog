@@ -1,0 +1,36 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net8.0-windows</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationIcon>Assets\ranking-icon.ico</ApplicationIcon>
+    <AssemblyName>NaverPropertyRanking_Blog</AssemblyName>
+    <RootNamespace>NaverPropertyRanking_Blog</RootNamespace>
+    <Version>0.2.1</Version>
+  </PropertyGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="appsettings.json" LogicalName="NaverPropertyRanking_Blog.appsettings.json" />
+    <Content Include="appsettings.json">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+    <Content Include="Assets\ranking-icon.ico">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+      <CopyToPublishDirectory>PreserveNewest</CopyToPublishDirectory>
+    </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <!-- 부동산뱅크 화면이 EUC-KR이라 .NET 기본 인코딩 목록에 없는 코드페이지가 필요하다. -->
+    <PackageReference Include="System.Text.Encoding.CodePages" Version="8.0.0" />
+  </ItemGroup>
+  <Target Name="CopyExternalAppSettingsAfterPublish"
+          AfterTargets="Publish"
+          Condition="'$(PublishSingleFile)' == 'true' and Exists('$(MSBuildProjectDirectory)\appsettings.json')">
+    <Copy SourceFiles="$(MSBuildProjectDirectory)\appsettings.json"
+          DestinationFiles="$(PublishDir)appsettings.json"
+          SkipUnchangedFiles="false" />
+  </Target>
+</Project>
